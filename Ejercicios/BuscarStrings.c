@@ -21,8 +21,8 @@ int main(){
         
         contador+=1;
     }
-    for(int i;  i < contador ;i++)
-        free((void*)p[i]);
+    for(int i;  i < contador ;i++){
+        free((void*)p[i]);}
     fclose(fp);
     free((void*)p);
     return 0;

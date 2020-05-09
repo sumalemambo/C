@@ -18,11 +18,10 @@ int main(){
         p[contador]=(char*)malloc(sizeof(char)*201);
         strcpy(p[contador],c);// c[0]
         printf("%s",p[contador]);
-        
         contador+=1;
     }
-    for(int i;  i < contador ;i++){
-        free((void*)p[i]);}
+    for(int i;  i < contador ;i++)
+        free((void*)p[i]);
     fclose(fp);
     free((void*)p);
     return 0;

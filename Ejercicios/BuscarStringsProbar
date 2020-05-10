@@ -1,16 +1,20 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 int main(){
 
     FILE *fp = fopen("S.txt","r");
-    char **arreglo = (char**)malloc(sizeof(char*)*1000000);
-    char *cadena = (char *)malloc(sizeof(char)*201);
     int i = 0, largo;
     
     if(fp == NULL){
         printf("Error al abrir el archivo\n");
         exit(1);
     }
+
+    char **arreglo = (char**)malloc(sizeof(char*)*1000000);
+    char *cadena = (char *)malloc(sizeof(char)*201);
+    
     while(fgets(cadena, 201, fp) != NULL){
         printf("%s\n",cadena);
         arreglo[i] = (char*)malloc(sizeof(char)*201);
@@ -19,7 +23,6 @@ int main(){
         strcpy(arreglo[i],cadena);
         i++;
     }
-
     puts("AHORA VAMOS A LEER EL ARREGLO");
     for (int b = 0; b < i; b++)
     {
@@ -31,4 +34,3 @@ int main(){
     fclose(fp);
     return 0;
 }
-

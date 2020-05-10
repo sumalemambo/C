@@ -30,6 +30,7 @@ int main(){
         free((void*)arreglo[b]);
     }
 
+    free((void**)arreglo);
     free((void*)cadena);
     fclose(fp);
     return 0;

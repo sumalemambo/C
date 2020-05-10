@@ -12,8 +12,7 @@ int main(){
         exit(1);
     }
 
-    char **p,c[201];
-    p=(char**)malloc(sizeof(char*)*10000000);
+    char **p=(char**)malloc(sizeof(char*)*10000000),c[201];
 
     while(fgets(c,201,fp)!=NULL){
 

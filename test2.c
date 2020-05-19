@@ -6,21 +6,18 @@ char **buscar_str(char **S, int n, char *P, int *largo){
     int contador;
     printf("%d\n",n);
     printf("%s\n",S[1]);
-    *largo=2;
-    printf("%d\n",*largo);
     printf("%s",P);
 }
 
 int main(){
 
     FILE *fp = fopen("S.txt","r");
-    int i = 0,*largo; // no olvidar iniciarlo
-    *largo=0;
+    int i = 0,*largo,largofinal=0; // no olvidar iniciarlo
     if(fp == NULL){
         printf("Error al abrir el archivo\n");
         exit(1);
     }
-
+    largo=largofinal;
     char **arreglo = (char**)malloc(sizeof(char*)*1000000),**arregloEscribir;
     char *cadena = (char *)malloc(sizeof(char)*201);
     while(fgets(cadena, 201, fp) != NULL){

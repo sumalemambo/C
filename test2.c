@@ -8,14 +8,14 @@ char **buscar_str(char **S, int n, char *P, int *largo){
     char **arreglo=(char**)malloc(sizeof(char*)*n);
     for(int i = 0; i < n; i++){
         if(strstr(S[i],P)){
-            printf("ENTREEEEEEEEEEEEEEEEE\n");
+            printf("%s\n",S[i]);
             arreglo[contador]=(char*)malloc(sizeof(char)*(strlen(S[i])));
             strcpy(arreglo[contador],S[i]);
             contador++;
         }
     }
     arreglo = (char**)realloc(arreglo,contador*sizeof(char*));
-    *largo = contador + 1;
+    *largo = contador;
     return arreglo;
 
 }
@@ -30,7 +30,7 @@ int main(){
     }
     char **arreglo = (char**)malloc(sizeof(char*)*1000000),**arregloEscribir;
     char *cadena = (char *)malloc(sizeof(char)*201);
-    while(fgets(cadena, 201, fp) != NULL){
+    while(fscanf(fp,"%s",cadena)==1){
         arreglo[i] = (char*)malloc(sizeof(char)*(strlen(cadena)+1));
         strcpy(arreglo[i],cadena);
         i++;
@@ -44,11 +44,12 @@ int main(){
         printf("Error al abrir el archivo\n");
         exit(1);
     }
-    while(fgets(cadena,201,fp)){
+    while(fscanf(fp,"%s",cadena)==1){
         arregloEscribir=buscar_str(arreglo,i,cadena,&largo);
-        escribo=fopen("SD.txt","w");
+        escribo=fopen(strcat(cadena,".txt"),"w");
     }
     fclose(escribo);
+    fclose(fp);
     for (int b = 0; b < i; b++)
     {
         free((void*)arreglo[b]);

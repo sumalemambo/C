@@ -50,23 +50,26 @@ void actualizarSaldos(char *clientes, char *transacciones){
         printf("Direccion: %s\n", cuentas[i].direccion);
     }
     */
-   char aux;
-   while(aux != EOF){
-       int numc1,numc2, cant;
-       aux = fgetc(ft);
-       if (aux == '+'){
-           fscanf(ft, "%d %d", &numc1, &cant);
-           printf("%d %d\n", numc1, cant);
-       }
-       if(aux == '-'){           
-           fscanf(ft, "%d %d", &numc1, &cant);
-           printf("%d %d\n", numc1, cant);
-       }
-       if(aux == '>'){
-           fscanf(ft, "%d %d %d", &numc1,&numc2, &cant);
-           printf("%d %d %d\n", numc1, numc2, cant);
-       }
-   }
+    char aux;
+    while(aux != EOF){
+        int numc1,numc2, cant;
+        aux = fgetc(ft);
+        if (aux == '+'){
+            fscanf(ft, "%d %d", &numc1, &cant);
+            printf("%d %d\n", numc1, cant);
+        }
+        else if(aux == '-'){           
+            fscanf(ft, "%d %d", &numc1, &cant);
+            printf("%d %d\n", numc1, cant);
+        }
+        else{
+            fscanf(ft, "%d %d %d", &numc1,&numc2, &cant);
+            printf("%d %d %d\n", numc1, numc2, cant);
+        }
+        aux = fgetc(ft);
+        aux = fgetc(ft);
+        printf("ENTRE\n");
+    }
 
     fclose(fc);
     fclose(ft);

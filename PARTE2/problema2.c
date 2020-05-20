@@ -58,7 +58,8 @@ void actualizarSaldos(char *clientes, char *transacciones){
            fscanf(ft, "%d %d", &numc1, &cant);
            printf("%d %d\n", numc1, cant);
        }
-       if(aux == '-'){           fscanf(ft, "%d %d", &numc1, &cant);
+       if(aux == '-'){           
+           fscanf(ft, "%d %d", &numc1, &cant);
            printf("%d %d\n", numc1, cant);
        }
        if(aux == '>'){

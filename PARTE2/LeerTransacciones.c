@@ -85,7 +85,12 @@ int main(){
     for(int i=0; i < Largo ; i++){
         printf("Numero de cuenta :%d  Monto final: %d\n",clientes[i].nCuenta,clientes[i].nMonto);
     }
-    free((void*)clientes);
     fclose(fp);
+    /*Aqui comenzar el sort del arreglo de structs usando el nCuenta*/
+
+
+    /*Desde aqui abrir el binario y modificar*/
+    
+    free((void*)clientes);
     return 0;
 }

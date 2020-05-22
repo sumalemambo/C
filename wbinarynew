@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int nroCuenta;
+    int saldo;
+    char nbre[51];
+    char direccion[51];
+}clienteBanco;
+
+int main(){
+    clienteBanco aux;
+    aux.nroCuenta = 1;
+    aux.saldo= 100;
+    FILE *fc = fopen("clientes.txt","w");
+
+    fwrite(&aux,sizeof(clienteBanco),1,fc);
+    aux.nroCuenta = 2;
+    aux.saldo= 1000;
+    fwrite(&aux,sizeof(clienteBanco),1,fc);
+    aux.nroCuenta = 3;
+    aux.saldo= 1000;
+    fwrite(&aux,sizeof(clienteBanco),1,fc);
+    aux.nroCuenta = 4;
+    aux.saldo= 1500;
+    fwrite(&aux,sizeof(clienteBanco),1,fc);
+    fclose(fc);
+
+
+    return 0;
+}

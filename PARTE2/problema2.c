@@ -1,59 +1,177 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+
+typedef struct {
+    int nCuenta;
+    int nMonto;
+    char Activo;
+}Cliente;
 
 typedef struct {
     int nroCuenta;
     int saldo;
     char nbre[51];
     char direccion[51];
-} clienteBanco;
+}clienteBanco;
 
-void cambioSaldo(clienteBanco *cliente, int cantidad);
-void transferencia(clienteBanco *cliente1, clienteBanco *cliente2, int cantidad);
+void Sort(Cliente *ListaClientes,int Inicio,int Final){
+
+    int Pivote=ListaClientes[(Inicio+Final)/2].nCuenta;
+    int izquierda=Inicio,derecha=Final;
+    Cliente temporal;
+
+    if(izquierda<=derecha){
+
+        while(ListaClientes[izquierda].nCuenta< Pivote && izquierda<Final){
+            izquierda++;
+        }
+        while(ListaClientes[derecha].nCuenta>Pivote){
+            derecha--;
+        }
+        if(izquierda <= derecha){
+            temporal=ListaClientes[izquierda];
+            ListaClientes[izquierda]=ListaClientes[derecha];
+            ListaClientes[derecha]=temporal;
+            izquierda++;
+            derecha--;
+        }
+        Sort(ListaClientes,Inicio,derecha);
+        Sort(ListaClientes,izquierda,Final);
+    }
+}
+
 
 void actualizarSaldos(char *clientes, char *transacciones){
 
-    FILE *fc = fopen(clientes,"r+");
-    FILE *ft = fopen(transacciones,"r");
+    FILE *fp=fopen(transacciones,"r");
+    char Operacion;
+    int Cuenta = 0, CuentaAux = 0 , Monto = 0 , Largo = 0;
 
-    if (fc == NULL){
-        printf("No se pudo abrir el archivo: %s\n",clientes);
+    if (fp == NULL){
+        printf("No existe el archivo que nos indica: %s\n",transacciones);
         exit (1);
     }
 
-    if (ft == NULL){
-        printf("No se pudo abrir el archivo: %s\n", transacciones);
-        exit (1);
-    }
-    
-    clienteBanco cliente;
-    int nclientes;
-    char aux;
-
-    while(aux != EOF){
-        int numc1,numc2, cant;
-        aux = fgetc(ft);
-        if (aux == '+'){
-            fscanf(ft, "%d %d", &numc1, &cant);
-            printf("%d %d\n", numc1, cant);
+    Cliente *cliente1=(Cliente*)calloc(10000000,sizeof(Cliente));
+    while(fgets(&Operacion,2,fp)!=NULL){
+        if(Operacion=='+'){
+            fscanf(fp," %d %d ",&Cuenta,&Monto); //El fscanf con el espacio al final consume el salto de linea, fgets nunca toma el \n
+            
+            for(int i = 0; i < 10000000;i++){ //Iteracion dependiente del break revisar si se puede hacer mas rapido
+                if(cliente1[i].Activo==0){
+                    cliente1[i].Activo='1';
+                    cliente1[i].nCuenta=Cuenta;
+                    cliente1[i].nMonto=Monto;
+                    Largo++;
+                    break;
+                }
+                else if(cliente1[i].nCuenta==Cuenta){
+                    cliente1[i].nMonto+=Monto;
+                    break;
+                }
+            }
         }
-        else if(aux == '-'){           
-            fscanf(ft, "%d %d", &numc1, &cant);
-            printf("%d %d\n", numc1, cant);
+        else if(Operacion=='-'){
+            fscanf(fp," %d %d ",&Cuenta,&Monto);
+
+            for(int i = 0; i < 10000000;i++){
+                if(cliente1[i].Activo==0){
+                    cliente1[i].Activo='1';
+                    cliente1[i].nCuenta=Cuenta;
+                    cliente1[i].nMonto=(Monto*-1);
+                    Largo++;
+                    break;
+                }
+                else if(cliente1[i].nCuenta==Cuenta){
+                    cliente1[i].nMonto-=Monto;
+                    break;
+                }
+            }
         }
         else{
-            fscanf(ft, "%d %d %d", &numc1,&numc2, &cant);
-            printf("%d %d %d\n", numc1, numc2, cant);
+            fscanf(fp," %d %d %d ",&Cuenta,&CuentaAux,&Monto);
+            for(int i = 0; i < 10000000;i++){
+                if(cliente1[i].Activo==0){
+                    cliente1[i].Activo='1';
+                    cliente1[i].nCuenta=Cuenta;
+                    cliente1[i].nMonto=(Monto*-1);
+                    Largo++;
+                    break;
+                }
+                else if(cliente1[i].nCuenta==Cuenta){
+                    cliente1[i].nMonto-=Monto;
+                    break;
+                }
+            }
+            for(int i = 0; i < 10000000;i++){
+                if(cliente1[i].Activo==0){
+                    cliente1[i].Activo='1';
+                    cliente1[i].nCuenta=CuentaAux;
+                    cliente1[i].nMonto=Monto;
+                    Largo++;
+                    break;
+                }
+                else if(cliente1[i].nCuenta==CuentaAux){
+                    cliente1[i].nMonto+=Monto;
+                    break;
+                }
+            }
         }
-        aux = fgetc(ft);
-        aux = fgetc(ft);
+
     }
-    
+
+    cliente1=(Cliente*)realloc(cliente1,sizeof(Cliente)*Largo);
+    fclose(fp);
+
+    /*Aqui comienza el sort del arreglo de structs*/
+    Sort(cliente1,0,Largo-1);
+    /*for(int i=0; i < Largo;i++){
+        printf("%d %d\n",cliente1[i].nCuenta,cliente1[i].nMonto);
+    }*/
+    /*Listo , ya ordena el arreglo*/
+
+    FILE *fc = fopen(clientes,"r+");
+
+    if (fc == NULL){
+        printf("No existe el archivo que nos indica: %s\n", clientes);
+        exit (1);
+    }
+
+    clienteBanco clientetext;
+    int nclientes = 0;
+
+    while(fread(&clientetext, sizeof(clienteBanco), 1, fc))
+    {
+        //printf("Numero de cuenta: %d\n", clientetext.nroCuenta);
+        //printf("Saldo: %d\n", clientetext.saldo);
+        //printf("Nombre: %s\n", clientetext.nbre);
+        //printf("Direccion: %s\n", clientetext.direccion);
+        //printf("\n");
+
+        if(cliente1[nclientes].nCuenta == clientetext.nroCuenta){
+            clientetext.saldo += cliente1[nclientes].nMonto;
+            nclientes++;
+        }
+        //printf("Numero de cuenta: %d\n", clientetext.nroCuenta);
+        //printf("Saldo: %d\n", clientetext.saldo);
+
+        fwrite(&clientetext, sizeof(clienteBanco), 1, fc);
+
+        printf("Numero de cuenta: %d\n", clientetext.nroCuenta);
+        printf("Saldo: %d\n", clientetext.saldo);
+        //printf("Nombre: %s\n", clientetext.nbre);
+        //printf("Direccion: %s\n", clientetext.direccion);
+        //printf("\n");
+
+        //printf("%d %d\n",cliente1[nclientes].nCuenta,cliente1[nclientes].nMonto);
+        //nclientes++;
+    }
+
+
+
+
+    free((void*)cliente1);
     fclose(fc);
-    fclose(ft);
-
-
 }
 
 int main(){

@@ -7,7 +7,7 @@ char **buscar_str(char **S, int n, char *P, int *largo){
     char **arreglo=(char**)malloc(sizeof(char*)*n);
     for(int i = 0; i < n; i++){
         if(strstr(S[i],P)){
-            arreglo[*largo]=(char*)malloc(sizeof(char)*(strlen(S[i])+6));
+            arreglo[*largo]=(char*)malloc(sizeof(char)*(strlen(S[i])+5));
             strcpy(arreglo[*largo],S[i]);
             (*largo)++;
         }

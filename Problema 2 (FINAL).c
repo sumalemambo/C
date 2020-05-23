@@ -41,7 +41,7 @@ void Sort(Cliente *ListaClientes,int Inicio,int Final){
 }
 
 /*****
-* TipoFunción: void, NombreFunción: Sort
+* TipoFunción: void ;NombreFunción: Sort
 ******
 * Resumen Función
 *Primero se recibe los parametros, a continuación se crea una variable llamada pivote la cual queda definida como el struct
@@ -165,7 +165,7 @@ void actualizarSaldos(char *clientes, char *transacciones){
 }
 
 /*****
-* TipoFunción: void, NombreFunción: actualizarSaldos
+* TipoFunción: void ;NombreFunción: actualizarSaldos
 ******
 * Resumen Función
 *Lo primero que se abre el archivo de texto transacciones y el de clientes para verificar si estos existen, y si no
@@ -201,7 +201,7 @@ int main(){
 }
 
 /*****
-* TipoFunción: int, NombreFunción: main
+* TipoFunción: int ;NombreFunción: main
 ******
 * Resumen Función
 *Es el que nos permite ejecutar el programa, para hacer funcionar las demás funciones las cuales invocaremos.

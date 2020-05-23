@@ -44,17 +44,17 @@ void Sort(Cliente *ListaClientes,int Inicio,int Final){
 * TipoFunción: void, NombreFunción: Sort
 ******
 * Resumen Función
-*Primero se les recibe los parametros, a continuación se crea una variable llamada pivote la cual queda definida como el el struct
-*que queda en el medio de todo el arreglo, para luego dividir el problema en 2 partes una parte que queda al lado izquierdo del 
+*Primero se recibe los parametros, a continuación se crea una variable llamada pivote la cual queda definida como el struct
+*que queda en el medio de todo el arreglo, para luego dividir el problema en 2 partes, una parte que queda al lado izquierdo del 
 *pivote y otro al lado derecho, para luego ir ordenando la parte izquierda, y luego la parte derecha, para luego al final chequear
-*si esta bien ordenado desde el inicio a la derecha, y en el segundo sort de derecha a izquierda, para que finalmente salga de la
-*función.
+*si esta bien ordenado con el primer sort desde el inicio a la derecha, y en el segundo sort de derecha a izquierda, para que
+*finalmente salga de la función.
 ******
-* Input: Cliente *ListaClientes,int Inicio,int Final
-* tipoParámetro NombreParámetro : Recibe un parametro tipo Cliente, el inicio del array, y el final.
+* Input:
+* tipoParámetro: Cliente, int, int ; NombreParámetro : Recibe un arreglo tipo Cliente, el inicio del array, y el final.
 ******
 * Returns:
-* TipoRetorno: no retorna nada, Descripción retorno: ordena el arreglo para poder iterarlo en orden.
+* TipoRetorno: no retorna nada, Descripción retorno: Ordena el arreglo para poder iterarlo en orden.
 *****/
 
 void actualizarSaldos(char *clientes, char *transacciones){
@@ -74,6 +74,7 @@ void actualizarSaldos(char *clientes, char *transacciones){
     char Operacion;
     int Cuenta = 0, CuentaAux = 0 , Monto = 0 , Largo = 0;
     Cliente *cliente1=(Cliente*)calloc(10000000,sizeof(Cliente));
+
     while(fgets(&Operacion,2,fp)!=NULL){
         if(Operacion=='+'){
             fscanf(fp," %d %d ",&Cuenta,&Monto); //El fscanf con el espacio al final consume el salto de linea, fgets nunca toma el \n
@@ -138,7 +139,6 @@ void actualizarSaldos(char *clientes, char *transacciones){
                 }
             }
         }
-
     }
 
     cliente1=(Cliente*)realloc(cliente1,sizeof(Cliente)*Largo);
@@ -159,6 +159,7 @@ void actualizarSaldos(char *clientes, char *transacciones){
         }
         contador++;
     }
+
     free((void*)cliente1);
     fclose(fc);
 }
@@ -175,11 +176,11 @@ void actualizarSaldos(char *clientes, char *transacciones){
 *anteriormente separarmos los depositos en 2, restandole al que deposita, y aumentandole al que recibe, así solo sumamos
 *al momento de modificar su saldo, para y finalmente cerrar el archivo ya modificado.
 ******
-* Input: char *clientes, char *transacciones
-* tipoParámetro NombreParámetro : 2 cadenas de caracteres con el nombre de los archivos a abrir.
+* Input:
+* tipoParámetro: char, char; NombreParámetro : 2 cadenas de caracteres con el nombre de los archivos a abrir.
 ******
 * Returns:
-* TipoRetorno: no retorna nada, Descripción retorno: 
+* TipoRetorno: no retorna nada, Descripción retorno: Realiza la actualización de el saldo en el archivo binario de clientes.
 *****/
 
 int main(){
@@ -206,7 +207,7 @@ int main(){
 *Es el que nos permite ejecutar el programa, para hacer funcionar las demás funciones las cuales invocaremos.
 ******
 * Input: 
-* tipoParámetra NombreParámetro : no recibe parametros, ya que es el que permite la ejecución del programa completo.
+* tipoParámetra:  ;NombreParámetro : no recibe parametros, ya que es el que permite la ejecución del programa completo.
 ******
 * Returns:
 * TipoRetorno: retorna el entero 0, Descripción retorno: el fin de ejecución del programa 

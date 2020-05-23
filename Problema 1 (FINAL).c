@@ -18,7 +18,7 @@ char **buscar_str(char **S, int n, char *P, int *largo){
 }
 
 /*****
-* TipoFunción: char NombreFunción: buscar_str
+* TipoFunción: char ;NombreFunción: buscar_str
 ******
 * Resumen Función
 *Primero realizamos una variable la cual sera el largo de nuestro arreglo final que retornaremos con las 
@@ -27,22 +27,25 @@ char **buscar_str(char **S, int n, char *P, int *largo){
 *se realiza un reajuste de la memoria, con las palabras que corresponde al prefijo otorgado, y se retorna
 *el arreglo con las palabras de dicho prefijo.
 ******
-* Input: char **S, int n, char *P, int *largo
-* tipoParámetra NombreParámetro : Un arreglo con las palabras a analizar, el largo, el prefijo, y el largo del arreglo final.
+* Input:
+* tipoParámetra: char, int, char, int ;NombreParámetro : Un arreglo con las palabras a analizar, el largo, el prefijo, y 
+*el largo del arreglo final.
 ******
 * Returns:
-* TipoRetorno: char , Descripción retorno: retorna un arreglo con las palabras que tienen ese prefijo.
+* TipoRetorno: char ;Descripción retorno: retorna un arreglo con las palabras que tienen ese prefijo.
 *****/
 
 int main(){
     FILE *fp = fopen("S.txt","r"),*escribo;
-    int i = 0, largo; // no olvidar iniciarlo
+    int i = 0,largo=0; // no olvidar iniciarlo
+    
     if(fp == NULL){
         printf("Error al abrir el archivo S\n");
         exit(1);
     }
     char **arreglo = (char**)malloc(sizeof(char*)*1000000),**arregloEscribir;
     char *cadena = (char *)malloc(sizeof(char)*201);
+
     while(fscanf(fp,"%s",cadena)==1){
         arreglo[i] = (char*)malloc(sizeof(char)*(strlen(cadena)+1));
         strcpy(arreglo[i],cadena);
@@ -59,12 +62,14 @@ int main(){
     while(fscanf(fp,"%s",cadena)==1){
         arregloEscribir=buscar_str(arreglo,i,cadena,&largo);
         escribo=fopen(strcat(cadena,".out"),"w");
-        for(int j=0;j < largo-1 ; j++){
+        for(int j=0; j < largo-1 ; j++){
             fprintf(escribo,"%s\n",arregloEscribir[j]);
             free((void*)arregloEscribir[j]);
         }
-        fprintf(escribo,"%s",arregloEscribir[largo-1]);
-        free((void*)arregloEscribir[largo-1]);
+        if(largo!=0){
+            fprintf(escribo,"%s\n",arregloEscribir[largo-1]);
+            free((void*)arregloEscribir[largo-1]);
+        }
         free((void*)arregloEscribir);
         fclose(escribo);
     }
@@ -78,20 +83,20 @@ int main(){
 }
 
 /*****
-* TipoFunción: int, NombreFunción: main
+* TipoFunción: int ;NombreFunción: main
 ******
 * Resumen Función
 *Lo primero que se realizamos fue crear una memoria donde guardaremos todas nuestras palabras,
-*las cuales pueden llegar a ser 1000000, y estas con un largo de 200 caracteres, y a continuación
-*leemos el archivo para saber cuanto se ocupara de esa memoria, para luego reducirla si no se ocupa todo
-*el espacio de la memoria que creamos, a continuación leemos el archivo P donde estan los prefijos que
-*debemos saber si se encuentran en el otro archivo, entonces invocamos la otra función para realizar esa 
+*las cuales pueden llegar a ser 1.000.000, y estas con un largo de 200 caracteres, y a continuación
+*leemos el archivo para saber cuanto se ocupara de esa memoria y guardando las palabras, para luego reducirla 
+*si no se ocupa todo el espacio de la memoria que creamos, posteriormente leemos el archivo P donde estan los prefijos que
+*debemos saber si se encuentran en el otro archivo, entonces invocamos la función para realizar esa 
 *operación y esta nos retornaria las palabras que tengan esos prefijos, para luego escribir un archivo de 
 *texto para cada palabra que tenian esos prefijos, y luego vamos liberando la memoria que solicitamos.
 ******
 * Input:
-* tipoParámetra NombreParámetro : no recibe parametros, ya que es el que permite la ejecución del programa completo.
+* tipoParámetra:   ;NombreParámetro: no recibe parametros, ya que es el que permite la ejecución del programa completo.
 ******
 * Returns:
-* TipoRetorno: retorna el entero 0, Descripción retorno: el fin de ejecución del programa 
+* TipoRetorno: entero 0 ;Descripción retorno: el fin de ejecución del programa 
 *****/

@@ -51,10 +51,10 @@ void Sort(Cliente *ListaClientes,int Inicio,int Final){
 *finalmente salga de la función.
 ******
 * Input:
-* tipoParámetro: Cliente, int, int ; NombreParámetro : Recibe un arreglo tipo Cliente, el inicio del array, y el final.
+* tipoParámetro: Cliente, int, int ;NombreParámetro: Recibe un arreglo tipo Cliente, el inicio del array, y el final.
 ******
 * Returns:
-* TipoRetorno: no retorna nada, Descripción retorno: Ordena el arreglo para poder iterarlo en orden.
+* TipoRetorno: no retorna nada ;Descripción retorno: Ordena el arreglo para poder iterarlo en orden.
 *****/
 
 void actualizarSaldos(char *clientes, char *transacciones){
@@ -177,10 +177,10 @@ void actualizarSaldos(char *clientes, char *transacciones){
 *al momento de modificar su saldo, para y finalmente cerrar el archivo ya modificado.
 ******
 * Input:
-* tipoParámetro: char, char; NombreParámetro : 2 cadenas de caracteres con el nombre de los archivos a abrir.
+* tipoParámetro: char, char ;NombreParámetro: 2 cadenas de caracteres con el nombre de los archivos a abrir.
 ******
 * Returns:
-* TipoRetorno: no retorna nada, Descripción retorno: Realiza la actualización de el saldo en el archivo binario de clientes.
+* TipoRetorno: no retorna nada ;Descripción retorno: Realiza la actualización de el saldo en el archivo binario de clientes.
 *****/
 
 int main(){
@@ -207,8 +207,8 @@ int main(){
 *Es el que nos permite ejecutar el programa, para hacer funcionar las demás funciones las cuales invocaremos.
 ******
 * Input: 
-* tipoParámetra:  ;NombreParámetro : no recibe parametros, ya que es el que permite la ejecución del programa completo.
+* tipoParámetra:  ;NombreParámetro: no recibe parametros, ya que es el que permite la ejecución del programa completo.
 ******
 * Returns:
-* TipoRetorno: retorna el entero 0, Descripción retorno: el fin de ejecución del programa 
+* TipoRetorno: retorna el entero 0 ;Descripción retorno: el fin de ejecución del programa 
 *****/

@@ -65,13 +65,9 @@ int main(){
     while(fscanf(fp,"%s",cadena)==1){
         arregloEscribir=buscar_str(arreglo,i,cadena,&largo);
         escribo=fopen(strcat(cadena,".out"),"w");
-        for(int j=0; j < largo-1 ; j++){
+        for(int j=0; j < largo ; j++){
             fprintf(escribo,"%s\n",arregloEscribir[j]);
             free((void*)arregloEscribir[j]);
-        }
-        if(largo!=0){
-            fprintf(escribo,"%s\n",arregloEscribir[largo-1]);
-            free((void*)arregloEscribir[largo-1]);
         }
         free((void*)arregloEscribir);
         fclose(escribo);

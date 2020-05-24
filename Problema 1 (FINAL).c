@@ -9,7 +9,7 @@ char **buscar_str(char **S, int n, char *P, int *largo){
     for(int i = 0; i < n; i++){
         LargoP=strlen(P);
         LargoS=strlen(S[i]);
-        if(LargoP <= LargoS && strncmp(P,S[i],LargoP)){
+        if(LargoP <= LargoS && strncmp(P,S[i],LargoP)==0){
             arreglo[*largo]=(char*)malloc(sizeof(char)*(strlen(S[i])+5));
             strcpy(arreglo[*largo],S[i]);
             (*largo)++;

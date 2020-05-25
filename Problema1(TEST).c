@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-/*void copiar_string(char* arreglo,char* cadena,int* largocadena){
+void copiar_string(char* arreglo,char* cadena,int* largocadena){
     int i=0;
     arreglo=(char*)malloc(sizeof(char)*201);
     for(; cadena[i]!='\0' ;i++){
@@ -12,7 +12,7 @@
     printf("%d\n",i);
     arreglo=(char*)realloc(arreglo,sizeof(char)*(i+1));
     largocadena=i;
-}*/
+}
 
 char **buscar_str(char **S,int* larreglo , int n, char *P, int *largo){
     *largo=0;

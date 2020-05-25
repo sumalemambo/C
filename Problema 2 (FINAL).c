@@ -184,21 +184,19 @@ void actualizarSaldos(char *clientes, char *transacciones){
 *****/
 
 int main(){
-    int lCliente, lTransacciones;
     char *varClientes, *varTransacciones;
 
-    printf("Ingrese el tamaño del nombre del archivo de clientes(tipo entero):");
-    scanf("%d", &lCliente);
-    varClientes = (char*)malloc(sizeof(char)*(lCliente+1));
+    varClientes = (char*)malloc(sizeof(char)*500);
     printf("Ingrese el nombre del archivo de clientes(incluyendo su extension):");
     scanf("%s", varClientes);
 
-    printf("Ingrese el tamaño del nombre del archivo de transacciones(tipo entero):");
-    scanf("%d", &lTransacciones);
-    varTransacciones = (char*)malloc(sizeof(char)*(lTransacciones+1));
+    varTransacciones = (char*)malloc(sizeof(char)*500);
     printf("Ingrese el nombre del archivo de transacciones(incluyendo su extension):");
     scanf("%s", varTransacciones);
     
+    varClientes = (char*)realloc(varClientes,sizeof(char)*strlen(varClientes));
+    varTransacciones = (char*)realloc(varTransacciones,sizeof(char)*strlen(varTransacciones));
+
     actualizarSaldos(varClientes, varTransacciones);
 
     free((void*)varClientes);

@@ -149,12 +149,13 @@ void actualizarSaldos(char *clientes, char *transacciones){
     /*Listo , ya ordena el arreglo*/
 
     clienteBanco clientetext;
-    int nclientes = 0,contador=0;
-    while(fread(&clientetext, sizeof(clienteBanco), 1, fc)){
+    int nclientes = 0,contador=0, tam = sizeof(clienteBanco);
+    
+    while(fread(&clientetext, tam, 1, fc)){
         if(clientetext.nroCuenta==cliente1[nclientes].nCuenta){
             clientetext.saldo+=cliente1[nclientes].nMonto;
-            fseek(fc,ftell(fc)-sizeof(clienteBanco),0);
-            fwrite(&clientetext,sizeof(clienteBanco),1,fc);
+            fseek(fc,ftell(fc)-tam,0);
+            fwrite(&clientetext,tam,1,fc);
             nclientes++;
         }
         contador++;
@@ -216,3 +217,4 @@ int main(){
 * Returns:
 * TipoRetorno: retorna el entero 0 ;Descripción retorno: el fin de ejecución del programa 
 *****/
+

@@ -184,24 +184,10 @@ void actualizarSaldos(char *clientes, char *transacciones){
 * TipoRetorno: no retorna nada ;Descripción retorno: Realiza la actualización de el saldo en el archivo binario de clientes.
 *****/
 
-int main(){
-    char *varClientes, *varTransacciones;
+int main(int cantidad, char *nombres[]){
 
-    varClientes = (char*)malloc(sizeof(char)*1000);
-    printf("Ingrese el nombre del archivo de clientes(incluyendo su extension):");
-    scanf("%s", varClientes);
+    actualizarSaldos(nombres[1], nombres[2]);
 
-    varTransacciones = (char*)malloc(sizeof(char)*1000);
-    printf("Ingrese el nombre del archivo de transacciones(incluyendo su extension):");
-    scanf("%s", varTransacciones);
-    
-    varClientes = (char*)realloc(varClientes,sizeof(char)*(strlen(varClientes)+ 1));
-    varTransacciones = (char*)realloc(varTransacciones,sizeof(char)*(strlen(varTransacciones) + 1));
-
-    actualizarSaldos(varClientes, varTransacciones);
-
-    free((void*)varClientes);
-    free((void*)varTransacciones);
     return 0;
 }
 
@@ -212,7 +198,8 @@ int main(){
 *Es el que nos permite ejecutar el programa, para hacer funcionar las demás funciones las cuales invocaremos.
 ******
 * Input: 
-* tipoParámetra:  ;NombreParámetro: no recibe parametros, ya que es el que permite la ejecución del programa completo.
+* tipoParámetra: int, char ;NombreParámetro: Los parametros que recibe con la cantidad de archivos a ejecutar en un inicio
+*y las cadenas de caracteres que ejecutara al momento de ejecutar el programa.
 ******
 * Returns:
 * TipoRetorno: retorna el entero 0 ;Descripción retorno: el fin de ejecución del programa 

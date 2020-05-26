@@ -187,16 +187,16 @@ void actualizarSaldos(char *clientes, char *transacciones){
 int main(){
     char *varClientes, *varTransacciones;
 
-    varClientes = (char*)malloc(sizeof(char)*500);
+    varClientes = (char*)malloc(sizeof(char)*1000);
     printf("Ingrese el nombre del archivo de clientes(incluyendo su extension):");
     scanf("%s", varClientes);
 
-    varTransacciones = (char*)malloc(sizeof(char)*500);
+    varTransacciones = (char*)malloc(sizeof(char)*1000);
     printf("Ingrese el nombre del archivo de transacciones(incluyendo su extension):");
     scanf("%s", varTransacciones);
     
-    varClientes = (char*)realloc(varClientes,sizeof(char)*strlen(varClientes));
-    varTransacciones = (char*)realloc(varTransacciones,sizeof(char)*strlen(varTransacciones));
+    varClientes = (char*)realloc(varClientes,sizeof(char)*(strlen(varClientes)+ 1));
+    varTransacciones = (char*)realloc(varTransacciones,sizeof(char)*(strlen(varTransacciones) + 1));
 
     actualizarSaldos(varClientes, varTransacciones);
 
@@ -217,4 +217,3 @@ int main(){
 * Returns:
 * TipoRetorno: retorna el entero 0 ;Descripción retorno: el fin de ejecución del programa 
 *****/
-

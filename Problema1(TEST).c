@@ -2,25 +2,13 @@
 #include <string.h>
 #include <stdlib.h>
 
-void copiar_string(char* arreglo,char* cadena,int* largocadena){
-    int i=0;
-    arreglo=(char*)malloc(sizeof(char)*201);
-    for(; cadena[i]!='\0' ;i++){
-        arreglo[i]=cadena[i];
-    }
-    arreglo[i+1]='\0';
-    printf("%d\n",i);
-    arreglo=(char*)realloc(arreglo,sizeof(char)*(i+1));
-    largocadena=i;
-}
-
 char **buscar_str(char **S,int* larreglo , int n, char *P, int *largo){
     *largo=0;
     int LargoP=strlen(P);
     char **arreglo=(char**)malloc(sizeof(char*)*n);
     for(int i = 0; i < n; i++){
         if(LargoP <= larreglo[i] && strncmp(P,S[i],LargoP)==0){
-            arreglo[*largo]=(char*)malloc(sizeof(char)*(larreglo[i]+5));
+            arreglo[*largo]=(char*)malloc(sizeof(char)*(larreglo[i]+1));
             strcpy(arreglo[*largo],S[i]);
             (*largo)++;
         }
@@ -58,7 +46,7 @@ int main(){
     }
     char **arreglo = (char**)malloc(sizeof(char*)*1000000),**arregloEscribir;
     int *larreglo=(int*)malloc(sizeof(int)*1000000);
-    char *cadena = (char *)malloc(sizeof(char)*201);
+    char *cadena = (char *)malloc(sizeof(char)*205);
 
     while(fscanf(fp,"%s ",cadena)==1){
         largo=strlen(cadena);

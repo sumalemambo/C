@@ -10,6 +10,7 @@ typedef struct node{
 typedef struct{
     unsigned int size;
     unsigned int pos;
+    int totalByte;
     tNode* head;
     tNode* tail;
     tNode* curr;
@@ -17,7 +18,14 @@ typedef struct{
 
 void initList(tList* L){
     L->curr=L->tail=L->head=(tNode*)malloc(sizeof(tNode));
-    L->size=L->pos=0;
+    L->size=L->pos=L->totalByte=0;
+}
+
+tElem getValue(tList* L){
+    if(L->curr == L->tail){
+        return -1;
+    }
+    return L->curr->next->final - L->curr->next->inicio+1;
 }
 
 void next(tList* L){
@@ -50,6 +58,7 @@ unsigned int insert(tList* L,tElem inicial,tElem fin){
         aux->prev=L->curr->next;
     }
     L->size++;
+    L->totalByte=L->totalByte+getValue(L);
     return L->pos;
 }
 
@@ -79,13 +88,6 @@ void moveToStart(tList* L){
     L->pos=0;
 }
 
-tElem getValue(tList* L){
-    if(L->curr == L->tail){
-        return -1;
-    }
-    return L->curr->next->final - L->curr->next->inicio;
-}
-
 void moveToEnd(tList* L){
     L->curr=L->tail;
 }
@@ -103,6 +105,7 @@ tElem erase(tList* L){
         return -1;
     }
     tNode* auxNode;
+    L->totalByte=L->totalByte-getValue(L);
     tElem aux=L->curr->next->inicio;
     if(L->curr->next == L->tail){
         auxNode=L->tail;
@@ -161,8 +164,26 @@ tElem endValue(tList* L){
 }
 
 void swap(tList* L,int val){
-    L->curr->inicio=L->curr->inicio+val;
-    if(L->curr->inicio=L->curr->final){
+    L->curr->next->inicio=L->curr->next->inicio+val;
+    if(L->curr->next->inicio == L->curr->next->final+1){
         erase(L);
+    }
+}
+
+int byte(tList* L){
+    return L->totalByte;
+}
+
+void unite(tList* L){
+    if(L->curr->next != L->tail){
+        if(L->curr->next->final == L->curr->next->next->inicio-1){
+            L->curr->next->next->inicio=L->curr->next->inicio;
+            erase(L);
+            unite(L);
+        }
+    }
+    else if(L->curr->next->prev != L->head ){
+        prev(L);
+        unite(L);
     }
 }

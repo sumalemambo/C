@@ -356,8 +356,8 @@ void check(list* L){
     if(L->curr->next != L->tail){
         if(L->curr->next->next->inByte-1 == L->curr->next->endByte){
             L->curr->next->next->inByte = L->curr->next->inByte;
-            check(L);
             erase(L);
+            check(L);
         }
     }
     

@@ -1,5 +1,6 @@
 #define empty -1
 #define MAX_SIZE 1000000
+#define tableSize 13
 #include <stdlib.h>
 
 typedef struct{
@@ -30,6 +31,30 @@ typedef struct{
     int size;
     int pos;
 }queue;
+
+typedef struct{
+    producto* table;
+    int prime;
+    int maxSize;
+    int size;
+}hashP;
+
+typedef struct{
+    oferta* table;
+    int prime;
+    int maxSize;
+    int size;
+}hashO;
+
+typedef struct{
+    int key;
+    int value;
+}elem;
+
+typedef struct{
+    elem* array;
+    int lenght;
+}heap;
 //Test de primalidad: solo verifico hasta el n/2 ya que cualquier numero mayor no podra dividir de manera entera a mi numero
 // estoy chequeando hasta el data/2 ya que necesito encontrar el menor estricto a M.
 //Hay un problema si el largo del struct producto es 1, en ese caso el minimo primo es 1, hay que ver eso.
@@ -65,83 +90,133 @@ int h2(int key,int lenght){
 }
 
 // Hash struct producto
-void initHashP(producto* HT,int lenght){
-    for(int i = lenght; i--;){
-        HT[i].codigo_producto = empty;
+void initHash(hashP* HT){
+    HT->maxSize = tableSize;
+    HT->size = 0;
+    HT->prime = 11;
+    HT->table = (producto*)malloc(sizeof(producto)*tableSize);
+    for(int i = tableSize;i--;){
+        HT->table[i].codigo_producto = empty;
     }
 }
 
-int hashInsertP(producto* HT,producto data,int lenght){
+int hashInsert(hashP* HT,producto data){
 
-    int start,i,pos,primo;
-    primo = findPrime(lenght);
-    pos = start = h1(data.codigo_producto,lenght);
-    for(i = 1; HT[pos].codigo_producto != empty  && HT[pos].codigo_producto != data.codigo_producto; i++){
-        pos = (start + i * h2(data.codigo_producto,primo)) % lenght;
+    int pos,h1_t,h2_t;
+    pos = h1_t = h1(data.codigo_producto,HT->maxSize);
+    h2_t = h2(data.codigo_producto,HT->prime);
+    for(int i = 1; HT->table[pos].codigo_producto != empty && HT->table[pos].codigo_producto != data.codigo_producto;i++){
+        pos = (h1_t + i * h2_t) % HT->maxSize;
     }
-    if(HT[pos].codigo_producto == data.codigo_producto){
+    if(HT->table[pos].codigo_producto == data.codigo_producto){
         return 0;
     }
-    else{
-        HT[pos] = data;
-        return 1;
-    }
+    HT->table[pos] = data;
+    HT->size++;
+    return 1;
 }
 
-producto* hashSearchP(producto* HT,int key,int lenght){
+void rehash(hashP* HT){
 
-    int start,i,pos,primo;
-    primo = findPrime(lenght);
-    pos = start = h1(key,lenght);
-    for(i = 1; HT[pos].codigo_producto != empty && HT[pos].codigo_producto != key; i++){
-        pos = (start + i * h2(key,primo)) % lenght;
+    int lenght = HT->maxSize;
+    HT->maxSize = findPrime(HT->maxSize*2);
+    HT->prime = findPrime(HT->maxSize);
+    producto* aux2 = HT->table;
+    HT->table = (producto*)malloc(sizeof(producto)*HT->maxSize);
+    HT->size = 0;
+    for(int i = HT->maxSize;i--;){
+        HT->table[i].codigo_producto = empty;
     }
-    if(HT[pos].codigo_producto == key){
-        return &(HT[pos]);
+
+    for(int i = lenght;i--;){
+        if(aux2[i].codigo_producto != empty){
+            hashInsert(HT,aux2[i]);
+        }
     }
-    else{
-        return NULL;
+
+    free((void*)aux2);
+
+}
+
+producto* hashSearch(hashP* HT,int key){
+
+    int pos,h1_t,h2_t;
+    pos = h1_t = h1(key,HT->maxSize);
+    h2_t = h2(key,HT->prime);
+    for(int i = 1; HT->table[pos].codigo_producto != empty && HT->table[pos].codigo_producto != key;i++){
+        pos = (h1_t + i * h2_t) % HT->maxSize;
     }
+    if(HT->table[pos].codigo_producto == key){
+        return &(HT->table[pos]);
+    }
+    return NULL;
+}
+
+void clearHashp(hashP* HT){
+    free((void*)HT->table);
 }
 
 //Hash struct oferta
-void initHashO(oferta* HT,int lenght){
-    for(int i = lenght;i--;){
-        HT[i].codigo_producto = -1;
+void initHashO(hashO* HT){
+
+    HT->maxSize = tableSize;
+    HT->size = 0;
+    HT->prime = 11;
+    HT->table = (oferta*)malloc(sizeof(oferta)*tableSize);
+    for(int i = tableSize;i--;){
+        HT->table[i].codigo_producto = empty;
     }
 }
 
-int hashInsertO(oferta* HT,oferta data,int lenght){
+int hashInsertO(hashO* HT,oferta data){
 
-    int start,i,pos,primo;
-    primo = findPrime(lenght);
-    pos = start = h1(data.codigo_producto,lenght);
-    for(i = 1; HT[pos].codigo_producto != empty  && HT[pos].codigo_producto != data.codigo_producto; i++){
-        pos = (start + i * h2(data.codigo_producto,primo)) % lenght;
+    int pos,h1_t,h2_t;
+    pos = h1_t = h1(data.codigo_producto,HT->maxSize);
+    h2_t = h2(data.cantidad_descuento,HT->prime);
+    for(int i = 1; HT->table[pos].codigo_producto != empty && HT->table[pos].codigo_producto != data.codigo_producto;i++){
+        pos = (h1_t + i * h2_t) % HT->maxSize;
     }
-    if(HT[pos].codigo_producto == data.codigo_producto){
+    if(HT->table[pos].codigo_producto == data.cantidad_descuento){
         return 0;
     }
-    else{
-        HT[pos] = data;
-        return 1;
-    }
+    HT->table[pos] = data;
+    HT->size++;
+    return 1;
 }
 
-producto* hashSearchO(producto* HT,int key,int lenght){
+oferta* hashSearchO(hashO* HT,int key){
 
-    int start,i,pos,primo;
-    primo = findPrime(lenght);
-    pos = start = h1(key,lenght);
-    for(i = 1; HT[pos].codigo_producto != empty && HT[pos].codigo_producto != key; i++){
-        pos = (start + i * h2(key,primo)) % lenght;
+    int pos, h1_t, h2_t;
+    pos = h1_t = h1(key,HT->maxSize);
+    h2_t = h2(key,HT->prime);
+    for(int i = 1; HT->table[pos].codigo_producto != empty && HT->table[pos].codigo_producto != key;i++){
+        pos = (h1_t + i * h2_t) % HT->maxSize;
     }
-    if(HT[pos].codigo_producto == key){
-        return &(HT[pos]);
+    if(HT->table[pos].cantidad_descuento == key){
+        return &(HT->table[pos]);
     }
-    else{
-        return NULL;
+    return NULL;
+}
+
+void rehash2(hashO* HT){
+
+    int lenght = HT->maxSize;
+    HT->maxSize = findPrime(HT->maxSize * 2);
+    HT->prime = findPrime(HT->maxSize);
+    oferta* aux = HT->table;
+    HT->table = (oferta*)malloc(sizeof(oferta)*HT->maxSize);
+    HT->size = 0;
+
+    for(int i = lenght;i--;){
+        if(aux[i].codigo_producto != empty){
+            hashInsertO(HT,aux[i]);
+        }
     }
+    free((void*)aux);
+}
+
+void clearHasho(hashO* HT){
+    free((void*)HT->table);
 }
 
 //queue
@@ -175,3 +250,32 @@ void deleteQueue(queue* p){
 }
 
 //arbol
+
+//Heap
+void maxHeapify(heap* H,int pos){
+    
+    int left = 2 * pos;
+    int right = 2 * pos + 1;
+    int aux = pos;
+    if(left < H->lenght && H->array[pos].value < H->array[left].value){
+        aux = left;
+    }
+    if(right < H->lenght && H->array[aux].value < H->array[right].value){
+        aux = right;
+    }
+    if( aux != pos){
+        elem aux2 = H->array[pos];
+        H->array[pos] = H->array[aux];
+        H->array[aux] = aux2;
+        maxHeapify(H,aux);
+    }
+}
+
+void buildHeap(heap* H,elem* array,int lenght){
+    H->array = array;
+    H->lenght = lenght;
+    for(int i = lenght/2;i--;){
+        maxHeapify(H,i);
+    }
+}
+

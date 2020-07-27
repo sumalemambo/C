@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 typedef struct{
-    int key, cant;
+    int key, rep;
 }dato;
 
 typedef dato elem;
@@ -32,7 +32,7 @@ void clearHelp(binNode* nodo){
     free((void*)nodo);
 }
 
-void clearr(binTree* T){
+void clearTree(binTree* T){
     clearHelp(T->root);
     T->root=NULL;
     T->size=0;
@@ -62,7 +62,7 @@ int findHelp(binNode* nodo,elem data){
         return findHelp(nodo->left,data);
     }
     else if(nodo->info.key == data.key){
-        nodo->info.cant += data.cant;
+        nodo->info.rep += data.rep;
         return 1;
     }
     else{
@@ -84,7 +84,7 @@ void PreOrderHelp(binNode* nodo){
     if(nodo == NULL){
         return;
     }
-    printf("-->(%d , %d)<--\n",nodo->info.key,nodo->info.cant);
+    printf("--(%d , %d)--\n",nodo->info.key,nodo->info.rep);
     PreOrderHelp(nodo->left);
     PreOrderHelp(nodo->right);
 }
@@ -93,7 +93,7 @@ void PreOrder(binTree* T){
     PreOrderHelp(T->root);
 }
 
-
+/*
 void main(){
     binTree T;
     initTree(&T);
@@ -101,7 +101,7 @@ void main(){
     for (int i = 0; i < 10; i++)
     {
         printf("Ingrese una key:");
-        scanf("%d %d", &d.key, &d.cant);
+        scanf("%d %d", &d.key, &d.rep);
         if(find(&T, d) == 1){
             continue;
         }
@@ -110,5 +110,6 @@ void main(){
         }
     }
     PreOrder(&T);
-    clearr(&T);
+    clearTree(&T);
 }
+*/

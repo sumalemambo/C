@@ -3,6 +3,7 @@
 #include <string.h>
 #include "INF134-Hash.c"
 
+
 int main(){
     FILE* fp=fopen("productos.dat","r");
     FILE* fo=fopen("ofertas.dat","r");
@@ -57,34 +58,27 @@ int main(){
         fscanf(fc,"%d ",&compras);
         while( compras != 0){
             fscanf(fc,"%d ",&key);
-            //printf("\n-->%d<--\n",key);
             enqueue(&p,key); // trabajar con una pseudo-cola ,insertar comparar con el inicial si son distintos muevo la posicion inicial a size y inserto size elementos al arbol
             compras--;
-            tam+=1;
         }
         n--;
     }
-    while(tam > 0){
+
+    while(p.size > 0){
         int rep = 1;
         int front = frontValue(&p);
-        //printf("\n-->%d<--\n",front);
         dequeue(&p);
         if(front == frontValue(&p)){
-            tam--;
             while(front == frontValue(&p)){
-            rep++;
-            dequeue(&p);
-            tam--;
+                rep++;
+                dequeue(&p);
             }
             printf("\n--->(%d , %d)<---\n",front, rep);
         }
         else{
             printf("\n--->(%d , %d)<---\n",front, rep);
-            tam--;
         }
     }
-    
-    //printf("\n--->%d<---\n",tam);
     
     clear(&p);
 
@@ -94,3 +88,4 @@ int main(){
     fclose(fc);
     return 0;
 }
+

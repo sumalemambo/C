@@ -15,23 +15,6 @@ typedef struct{
     int monto_descuento;
 }oferta;
 
-typedef struct Node{
-    struct Node* left;
-    struct Node* right;
-    int key;
-    int value;
-}node;
-
-typedef struct{
-    node* root;
-}tree;
-
-typedef struct{
-    int* tqueue;
-    int size;
-    int pos;
-}queue;
-
 typedef struct{
     producto* table;
     int prime;
@@ -47,14 +30,32 @@ typedef struct{
 }hashO;
 
 typedef struct{
-    int key;
-    int value;
-}elem;
+    int* array;
+    int top;
+    int maxSize;
+}stack;
 
 typedef struct{
-    elem* array;
+    int key;
+    int rep;
+    int value;
+}dato;
+
+typedef struct node{
+    dato info;
+    struct node* left;
+    struct node* right;
+}binNode;
+
+typedef struct{
+    binNode* root;
+}binTree;
+
+typedef struct{
+    dato* array;
     int lenght;
 }heap;
+
 //Test de primalidad: solo verifico hasta el n/2 ya que cualquier numero mayor no podra dividir de manera entera a mi numero
 // estoy chequeando hasta el data/2 ya que necesito encontrar el menor estricto a M.
 //Hay un problema si el largo del struct producto es 1, en ese caso el minimo primo es 1, hay que ver eso.
@@ -192,7 +193,7 @@ oferta* hashSearchO(hashO* HT,int key){
     for(int i = 1; HT->table[pos].codigo_producto != empty && HT->table[pos].codigo_producto != key;i++){
         pos = (h1_t + i * h2_t) % HT->maxSize;
     }
-    if(HT->table[pos].cantidad_descuento == key){
+    if(HT->table[pos].codigo_producto == key){
         return &(HT->table[pos]);
     }
     return NULL;
@@ -219,63 +220,147 @@ void clearHasho(hashO* HT){
     free((void*)HT->table);
 }
 
-//queue
-void initQueue(queue* p){
-    p->tqueue = (int*)malloc(sizeof(int) * MAX_SIZE);
-    p->size = p->pos = 0;
-}
-
-void enqueue(queue* p,int data){
-    p->tqueue[p->size++] = data;
-}
-
-int dequeue(queue* p){
-    if(p->size == 0){
-        return empty;
-    }
-    p->size--;
-    return p->tqueue[p->pos++];
-}
-
-int frontValue(queue* p){
-    return p->tqueue[p->pos];
-}
-
-void clear(queue* p){
-    p->size = p->pos = 0;
-}
-
-void deleteQueue(queue* p){
-    free((void*)p->tqueue);
-}
-
-//arbol
-
 //Heap
-void maxHeapify(heap* H,int pos){
-    
-    int left = 2 * pos;
-    int right = 2 * pos + 1;
-    int aux = pos;
-    if(left < H->lenght && H->array[pos].value < H->array[left].value){
+void Heapify(heap* H,int pos){
+
+    int left,right,aux = pos;
+    dato aux1 = H->array[pos];
+    left = 2 * pos;
+    right = 2 * pos + 1;
+    if(left <= H->lenght && H->array[pos].value < H->array[left].value){
         aux = left;
     }
-    if(right < H->lenght && H->array[aux].value < H->array[right].value){
+    if(right <= H->lenght && H->array[aux].value < H->array[right].value){
         aux = right;
     }
-    if( aux != pos){
-        elem aux2 = H->array[pos];
-        H->array[pos] = H->array[aux];
-        H->array[aux] = aux2;
-        maxHeapify(H,aux);
+    if(aux != pos){
+        H->array[pos] = H->array[aux]; 
+        H->array[aux] = aux1;
+        Heapify(H,aux);
     }
 }
 
-void buildHeap(heap* H,elem* array,int lenght){
+void maxHeapify(heap* H){
+    for(int i = 1 ; i <= H->lenght ; i++){
+        Heapify(H,i);
+    }
+}
+
+dato deleteMax(heap* H){
+    dato aux = H->array[1];
+    H->array[1] = H->array[H->lenght];
+    Heapify(H,1);
+    H->lenght--;
+    return aux;
+}
+
+
+void buildHeap(heap* H,dato* array,int lenght){
     H->array = array;
     H->lenght = lenght;
-    for(int i = lenght/2;i--;){
-        maxHeapify(H,i);
+}
+
+void deleteHeap(heap* H){
+    free((void*)H->array);
+}
+
+// stack
+void initStack(stack* S){
+    S->array = (int*)malloc(sizeof(int)*MAX_SIZE);
+    S->maxSize = MAX_SIZE;
+    S->top = -1;
+
+}
+
+void destroyStack(stack* S){
+    free((void*)S->array);
+}
+
+void push(stack* S,int key){
+    if(S->top == S->maxSize){
+        return;
+    }
+    S->array[++S->top] = key;
+}
+
+void clear(stack* S){
+    S->top = -1;
+}
+
+int topValue(stack* S){
+    return S->array[S->top];
+}
+
+int lenght(stack* S){
+    return S->top+1;
+}
+//arbol
+void initTree(binTree* T){
+    T->root = NULL;
+}
+
+void clearHelp(binNode* nodo){
+    if( nodo == NULL){
+        return;
+    }
+    clearHelp(nodo->left);
+    clearHelp(nodo->right);
+    free((void*)nodo);
+}
+
+void clearTree(binTree* T){
+    clearHelp(T->root);
+    T->root=NULL;
+}
+
+binNode* insertHelp(binNode* nodo,dato buy,int* size){
+    if(nodo == NULL){
+        nodo=(binNode*)malloc(sizeof(binNode));
+        nodo->info=buy;
+        nodo->left=NULL;
+        nodo->right=NULL;
+        (*size)++;
+    }
+    else if(nodo->info.key > buy.key){
+        nodo->left=insertHelp(nodo->left,buy,size);
+    }
+    else if(nodo->info.key == buy.key){
+        nodo->info.rep += buy.rep;
+        nodo->info.value += buy.value;
+    }
+    else{
+        nodo->right=insertHelp(nodo->right,buy,size);
+    }
+    return nodo;
+}
+
+void insert(binTree* T,dato buy,int* size){
+    T->root=insertHelp(T->root,buy,size);
+}
+
+void PreOrderHelp2(binNode* nodo){
+    if(nodo == NULL){
+        return;
+    }
+    printf("--(%d , %d ,%d )--\n",nodo->info.key,nodo->info.rep,nodo->info.value);
+    PreOrderHelp2(nodo->left);
+    PreOrderHelp2(nodo->right);
+}
+
+void PreOrder2(binTree* T){
+    PreOrderHelp2(T->root);
+}
+
+//
+void treeToArrayHelp(dato* array,binNode* T,int* i){
+    if(T != NULL){
+        array[(*i)++] = T->info;
+        treeToArrayHelp(array,T->left,i);
+        treeToArrayHelp(array,T->right,i);
     }
 }
 
+void treeToArray(dato* array,binTree* T){
+    int i = 1;
+    treeToArrayHelp(array,T->root,&i);
+}

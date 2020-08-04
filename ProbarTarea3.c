@@ -27,8 +27,9 @@ int main(){
     fread(&n,sizeof(int),1,fp);
     if( n == 0 ){
         printf("No hay productos que agregar\n");
+        exit(1);
     }
-    
+
     initTree(&T);
     initHash(&HT);
 

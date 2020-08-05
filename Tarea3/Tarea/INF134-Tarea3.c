@@ -56,7 +56,6 @@ int main(){
     fclose(fo);
 
     fscanf(fc,"%d\n",&n);
-    printf("%d",n);
     fscanf(fc,"%d\n",&clientes);
 
     while(clientes != 0){

@@ -11,7 +11,7 @@ typedef struct{
 int main(){
     FILE* fp=fopen("productos.dat","w");
     producto write;
-    int a = 5;
+    int a = 6;
     fwrite(&a,sizeof(int),1,fp);
 
     write.codigo_producto = 2020;
@@ -37,6 +37,11 @@ int main(){
     write.codigo_producto = 1918;
     strcpy(write.nombre_producto,"Azucar");
     write.precio = 770;
+    fwrite(&write,sizeof(producto),1,fp);
+    
+    write.codigo_producto = 1991;
+    strcpy(write.nombre_producto,"Porotos");
+    write.precio = 250;
     fwrite(&write,sizeof(producto),1,fp);
     
     fclose(fp);

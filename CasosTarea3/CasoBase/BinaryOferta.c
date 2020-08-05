@@ -10,9 +10,9 @@ int main(){
     FILE* fp = fopen("ofertas.dat","w");
     oferta help;
     int a = 1;
-    help.codigo_producto = 24;
-    help.cantidad_descuento = 3;
-    help.monto_descuento = 100;
+    help.codigo_producto = 1991;
+    help.cantidad_descuento = 2;
+    help.monto_descuento = 5;
     fwrite(&a,sizeof(int),1,fp);
     fwrite(&help,sizeof(oferta),1,fp);
     fclose(fp);

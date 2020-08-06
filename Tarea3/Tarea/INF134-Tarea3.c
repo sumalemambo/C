@@ -81,7 +81,7 @@ int main(){
 
 
     maxHeapify(&h3);
-    
+
     clearTree(&T);
     FILE* rank = fopen("ranking.txt","w");
     if(rank == NULL){

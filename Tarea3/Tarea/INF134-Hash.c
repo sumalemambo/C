@@ -201,6 +201,9 @@ void rehash2(hashO* HT){
     oferta* aux = HT->table;
     HT->table = (oferta*)malloc(sizeof(oferta)*HT->maxSize);
     HT->size = 0;
+    for(int i = HT->maxSize;i--;){
+        HT->table[i].codigo_producto = empty;
+    }
 
     for(int i = lenght;i--;){
         if(aux[i].codigo_producto != empty){

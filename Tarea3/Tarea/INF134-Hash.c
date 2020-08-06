@@ -167,11 +167,11 @@ int hashInsertO(hashO* HT,oferta data){
 
     int pos,h1_t,h2_t;
     pos = h1_t = h1(data.codigo_producto,HT->maxSize);
-    h2_t = h2(data.cantidad_descuento,HT->prime);
+    h2_t = h2(data.codigo_producto,HT->prime);
     for(int i = 1; HT->table[pos].codigo_producto != empty && HT->table[pos].codigo_producto != data.codigo_producto;i++){
         pos = (h1_t + i * h2_t) % HT->maxSize;
     }
-    if(HT->table[pos].codigo_producto == data.cantidad_descuento){
+    if(HT->table[pos].codigo_producto == data.codigo_producto){
         return 0;
     }
     HT->table[pos] = data;
@@ -329,7 +329,6 @@ void treeAcHelp(binNode* nodo,hashP* HT,hashO* HT2){
     }
 
     if( nodo->info.accumulated != 0){
-
         aux = hashSearchO(HT2,nodo->info.key);
         nodo->info.value += (hashSearch(HT,nodo->info.key)->precio * nodo->info.accumulated - ((aux == NULL)? 0 : (nodo->info.accumulated / aux->cantidad_descuento) * aux->monto_descuento));
         nodo->info.accumulated = 0;

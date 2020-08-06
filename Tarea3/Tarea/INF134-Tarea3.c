@@ -38,9 +38,8 @@ int main(){
         }
         n--;
     }
+
     fclose(fp);
-
-
     initHashO(&HT2);
     fread(&n,sizeof(int),1,fo);
 
@@ -53,6 +52,7 @@ int main(){
         }
         n--;
     }
+
     fclose(fo);
 
     fscanf(fc,"%d\n",&n);
@@ -70,7 +70,6 @@ int main(){
         clientes--;
     }
     fclose(fc);
-    //PreOrder2(&T);
 
     clearHasho(&HT2);
 
@@ -97,8 +96,8 @@ int main(){
     }
     aux = deleteMax(&h3);
     fprintf(rank,"%d %s %d %d",aux.key,hashSearch(&HT,aux.key)->nombre_producto,aux.rep, aux.value);
-    fclose(rank);
 
+    fclose(rank);
     clearHashp(&HT);
     clearTree(&T);
     free((void*)array);

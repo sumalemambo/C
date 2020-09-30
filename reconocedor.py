@@ -7,7 +7,7 @@ pattern_mail = re.compile(r'^[a-zA-Z0-9!#$%&’*+\-/=?\^_‘{|}~](?:[a-zA-Z0-9!#
 pattern_pascal = re.compile(r'^{(?:[0-9]|[1-9](?:[0-9])+)(?:\s([0-9]|[1-9](?:[0-9])+))*}$')
 pattern_time = re.compile(r'^(?:[0-9]){4}\-(?:0[1-9]|[1-9]|1[0-2])\-(?:0[1-9]|[0-9]|[1-2][0-9]|3[01])$')
 pattern_xdson = re.compile(r'^(( *[a-zA-Z]+ *)=( *\"[a-zA-Z0-9]+\" *)|( *[a-zA-Z]+ *)=( *\'[a-zA-Z0-9]+\' *)|( *[a-zA-Z]+ *)=( *[0-9]+ *)|( *[a-zA-Z]+ *)=( *\[(\"[a-zA-Z0-9]+\"|\'[a-zA-Z0-9]+\'|[0-9]+)(,(\"[a-zA-Z0-9]+\"|\'[a-zA-Z0-9]+\'|[0-9]+))*\] *))(,((( *[a-zA-Z]+ *)=( *\"[a-zA-Z0-9]+\" *)|( *[a-zA-Z]+ *)=( *\'[a-zA-Z0-9]+\' *)|( *[a-zA-Z]+ *)=( *[0-9]+ *)|( *[a-zA-Z]+ *)=( *\[(\"[a-zA-Z0-9]+\"|\'[a-zA-Z0-9]+\'|[0-9]+)(,(\"[a-zA-Z0-9]+\"|\'[a-zA-Z0-9]+\'|[0-9]+))*\] *))))*$')
-#pattern_xdson = re.compile(r'^[0-9]|[1-9](?:[0-9])+|\[(?:"(?:\w)*\"|\'(?:\w)*\')\]$')
+pattern_xdson2 = re.compile(r'^<(( *[a-zA-Z]+ *)=( *\"[a-zA-Z0-9]+\" *)|( *[a-zA-Z]+ *)=( *\'[a-zA-Z0-9]+\' *)|( *[a-zA-Z]+ *)=( *[0-9]+ *)|( *[a-zA-Z]+ *)=( *\[(\"[a-zA-Z0-9]+\"|\'[a-zA-Z0-9]+\'|[0-9]+)(,(\"[a-zA-Z0-9]+\"|\'[a-zA-Z0-9]+\'|[0-9]+))*\] *))(,((( *[a-zA-Z]+ *)=( *\"[a-zA-Z0-9]+\" *)|( *[a-zA-Z]+ *)=( *\'[a-zA-Z0-9]+\' *)|( *[a-zA-Z]+ *)=( *[0-9]+ *)|( *[a-zA-Z]+ *)=( *\[(\"[a-zA-Z0-9]+\"|\'[a-zA-Z0-9]+\'|[0-9]+)(,(\"[a-zA-Z0-9]+\"|\'[a-zA-Z0-9]+\'|[0-9]+))*\] *))))*>$')
 
 def gen(string):
     stack = []
@@ -20,12 +20,30 @@ def gen(string):
             stack.append(i)
         elif c == '>' and stack:
             start = stack.pop()
+            if(re.match(pattern_xdson,string[start + 1: i]) == False):
+                return False
             if(contador == 0):
                 string = string[:start] + '1' + string[i+1:]
             else:
                 string = string[:start] + 'hola = 1' + string[i+1:]
             return string
-            
+    return False
+
+def xdson(string):
+    contador = 0
+    for i in string:
+        if i == '<':
+            contador += 1
+    while contador > 1:
+        string = gen(string)
+        print(string)
+        if(string == False):
+            return False
+        contador -= 1
+    print(string)
+    if(re.match(pattern_xdson2,string)):
+        return True
+    return False
 
 def leap(year):
     if year == 0:
@@ -87,10 +105,5 @@ def p(string):
 file = open("palabras.txt","r")
 for i in file:
     i = i.strip()
-    i = gen(i)
-    print(i)
-    i = gen(i)
-    print(i)
-    i = gen(i)
-    print(i)
+    print(xdson(i))
 file.close()

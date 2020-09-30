@@ -20,7 +20,8 @@ def gen(string):
             stack.append(i)
         elif c == '>' and stack:
             start = stack.pop()
-            if(re.match(pattern_xdson,string[start + 1: i]) == False):
+            print(re.match(pattern_xdson,string[start + 1: i]))
+            if(re.match(pattern_xdson,string[start + 1: i]) == None):
                 return False
             if(contador == 0):
                 string = string[:start] + '1' + string[i+1:]
@@ -101,6 +102,8 @@ def p(string):
         print("Fecha")
     else:
         print("No pertenece al lenguaje")
+
+
 
 file = open("palabras.txt","r")
 for i in file:
